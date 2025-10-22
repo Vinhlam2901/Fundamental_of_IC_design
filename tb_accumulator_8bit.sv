@@ -42,15 +42,20 @@ module tb_accumulator_8bit;
     #20; // Đợi một chu kỳ để xem kết quả
     #20;
     // Kết quả mong đợi: o_carry = 0, o_ovf = 0 (không tràn số)
-    // Test 2: Cộng 100 với 100 (có tràn số)
+   // Test 2: Cộng 100 với 100 (có tràn số)
     i_a = 8'b01100100;  // i_a = 100
     #20; // Đợi một chu kỳ để xem kết quả
     // Kết quả mong đợi: o_carry = 0, o_ovf = 1
 
+    // >>> RESET NGAY TẠI ĐÂY <<<
+    reset = 0;   // Kích reset ngay lập tức
+    #5;          // Reset ngắn (không đợi tới cạnh clock nếu là async)
+    reset = 1;   // Nhả reset
+    #10;         // Một chút thời gian để ổn định trước khi test tiếp
+
     // Test 3: Cộng -50 với -50 (tràn số âm)
     i_a = 8'b11001110;  // i_a = -50
     #20; // Đợi một chu kỳ để xem kết quả
-    // Kết quả mong đợi: o_carry = 0, o_ovf = 1 (tràn số âm)
 
     // Test 4: Cộng 127 với 127 (có tràn số dương)
     i_a = 8'b01111111;  // i_a = 127
