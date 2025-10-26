@@ -81,7 +81,7 @@ module accumulator_8bit (
     end if (s_ld) begin
         o_s <= o_sum;
     end
+    o_carry <= carry;
+    o_ovf   <= ovf;
   end
-  assign o_carry = carry;
-  assign o_ovf = ovf;
 endmodule

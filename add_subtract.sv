@@ -1,10 +1,10 @@
 module add_subtract (
     input  wire [7:0]  a_i,
     input  wire [7:0]  b_i,
-    input              add_sub,     // 0: Cộng, 1: Trừ
+    input  wire        add_sub,     // 0: Cộng, 1: Trừ
     output wire [7:0]  result_o,
-    output             o_carry,
-    output             o_ovf
+    output wire        o_carry,
+    output wire        o_ovf
 );
   wire [6:0] c;
   wire [7:0] b_mod_i;
