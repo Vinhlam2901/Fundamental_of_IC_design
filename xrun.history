@@ -1,5 +1,0 @@
-s1(26Oct2025:11:24:28):  xrun ./alu.sv 
-s2(26Oct2025:11:24:41):  xrun ./alu.sv 
-s3(26Oct2025:11:28:34):  xrun -f ./alu.list -sv 
-s4(26Oct2025:11:29:45):  xrun -f ./alu.list -sv 
-s5(26Oct2025:11:35:35):  xrun -f ./alu.list -sv 

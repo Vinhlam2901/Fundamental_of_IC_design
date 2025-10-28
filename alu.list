@@ -1,6 +1,0 @@
-./alu.sv
-./add_subtract.sv
-./full_adder.sv
-./comparator_8bit.sv
-./FullSub_1bit.sv
-./subtractor_8bit.sv

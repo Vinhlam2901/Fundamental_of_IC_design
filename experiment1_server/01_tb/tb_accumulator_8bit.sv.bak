@@ -1,0 +1,88 @@
+module tb_accumulator_8bit;
+  //========================DECLARATION============================================================================
+  // stimulus inputs //
+  logic       i_clk;
+  logic       reset;
+  logic signed [7:0] i_a;
+  // expected outputs //
+  logic signed [7:0] o_s;
+  logic      o_carry;
+  logic      o_ovf;
+
+  //========================MODULE INSTANTIATION==================================================================
+  accumulator_8bit uut (
+    .i_clk(i_clk),
+    .ni_rst(reset),
+    .i_a(i_a),
+    .o_carry(o_carry),
+    .o_ovf(o_ovf),
+    .o_s ( o_s )
+  );
+
+  //========================CLOCK GENERATION======================================================================
+  //  (Clock) 50MHz
+  always begin
+    #10 i_clk = ~i_clk;  // T20ns -> f 50MHz
+  end
+
+  //========================TEST SEQUENCE=========================================================================  
+  initial begin
+    $dumpfile("tb_accumulator_8bit.vcd");
+    $dumpvars(0, tb_accumulator_8bit);
+    // cycle 0 // reset //
+    i_clk = 0;
+    reset = 0;       
+    i_a = 8'd17;
+    #20;
+    // cycle 1 //               
+    reset = 1;      
+    i_a = 8'd17; // 17 + 0 = 17 //
+    #20;
+    // cycle 2 //          
+    i_a = 8'd75; // 75 + 17 = 92 /
+    #20; 
+    // cycle 3 // 
+    i_a = 8'b11000001; // -63 // -63 + 92 = 29//
+    #20;
+    // cycle 4 
+    i_a = 8'b11011100; // -36 // -36 + 29 = -7 //
+    #20;
+    // cycle 5 //
+    i_a = 8'd0;  
+    #20;
+    // cycle 6 //
+    i_a = 8'd0; 
+    #10;
+    reset = 0;
+    #10;
+    // cycle 7 // start positive overflow check //
+    reset  = 1'b1;
+    i_a = 8'd93; 
+    #20;   
+    // cycle 8 // 93 + 0 = 93 //
+    i_a = 8'd93; 
+    #20;
+    // cycle 9 // 93 + 93 = overflow //
+    i_a = 8'd93; 
+    #20;
+    // cycle 10 //
+    i_a = 8'd93; 
+    #20; 
+    // cycle 11 // start negative overflow check //
+    i_a = 8'b11011011; // -37 //
+    #10;
+    reset = 1'b0;
+    #10;
+    // cycle 12-13-14-15-16 // add -37 by itself until overfolw //
+     reset = 1'b1;
+     i_a = 8'b11011011; // -37 //
+     #100;   
+    $finish;
+  end
+
+  //========================MONITOR OUTPUTS=======================================================================
+  initial begin
+    $monitor("%t: i_a = %d, o_a =%d, i_s = %d, o_s = %d, o_ovf = %b , o_carry = %b , reset = %b, reg_ld = %b",$time, i_a, uut.o_a, uut.i_s, o_s, o_ovf, o_carry, reset, reg_ld);
+  end
+
+endmodule
